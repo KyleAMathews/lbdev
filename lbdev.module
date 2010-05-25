@@ -70,7 +70,7 @@ function lbdev_disable() {
 function lbdev_menu() {
   $items = array();
 
-  $items['typography-test-page'] = array(
+  $items['typography'] = array(
     'title' => 'Typography Test Page',
     'description' => 'Configure settings',
     'page callback' => 'lbdev_typography_test_page',
