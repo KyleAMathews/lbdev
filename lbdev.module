@@ -1,0 +1,84 @@
+<?php
+
+include_once('lbdev.features.inc');
+
+/**
+ * Implementation of hook_init().
+ */
+function lbdev_init() {
+  global $user;
+
+  if ($user->uid == 1) {
+    context_set('features', 'user', 'user_1');
+  }
+}
+
+/**
+ * Implementation of hook_enable().
+ */
+function lbdev_enable() {
+  // Weight needs to be higher than webgear.module for strongarming variables.
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'lbdev' AND type = 'module'");
+  drupal_flush_all_caches();
+}
+
+/**
+ * Implementation of hook_disable().
+ */
+function lbdev_disable() {
+  if (function_exists('features_get_features') && ($feature = features_get_features('lbdev')) && !empty($feature->info['dependencies'])) {
+    $modules = $feature->info['dependencies'];
+    $key = array_search('features', $modules);
+    if (is_numeric($key)) {
+      unset($modules[$key]);
+    }
+    module_disable($modules);
+  }
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function lbdev_menu() {
+  $items = array();
+
+  $items['typography-test-page'] = array(
+    'title' => 'Typography Test Page',
+    'description' => 'Configure settings',
+    'page callback' => 'lbdev_typography_test_page',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function lbdev_theme() {
+  $items = array();
+
+  $items['typography_test_page'] = array(
+    'template' => 'typography-test-page',
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_strongarm().
+ */
+function lbdev_strongarm() {
+  return array(
+    'preprocess_css' => 0,
+    'preprocess_js' => 0,
+    'cache' => 0,
+  );
+}
+
+/**
+ * Page callback for typography-test-page.
+ */
+function lbdev_typography_test_page() {
+  return theme('typography_test_page');
+}
