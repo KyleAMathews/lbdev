@@ -1,54 +1,45 @@
 <?php
 
 /**
- * Helper to implemetation of hook_context_default_contexts().
+ * Helper to implementation of hook_ctools_plugin_api().
  */
-function _lbdev_context_default_contexts() {
-  $items = array();
+function _lbdev_ctools_plugin_api() {
+  $args = func_get_args();
+  $module = array_shift($args);
+  $api = array_shift($args);
+  if ($module == "context" && $api == "context") {
+    return array("version" => 3);
+  }
+  else if ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => 1);
+  }
+}
 
-  $items[] = array(
-    'namespace' => 'features',
-    'attribute' => 'user',
-    'value' => 'user_1',
-    'description' => 'User is User 1',
-    'block' => array(
-      'demo_0' => array(
-        'module' => 'demo',
-        'delta' => '0',
-        'weight' => 20,
-        'region' => 'right',
-        'status' => '0',
-        'label' => 'Demo site reset',
-        'type' => 'context_ui',
-      ),
-      'context_ui_devel' => array(
-        'module' => 'context_ui',
-        'delta' => 'devel',
-        'weight' => 21,
-        'region' => 'right',
-        'status' => '0',
-        'label' => 'Context Devel',
-        'type' => 'context_ui',
-      ),
-      'devel_0' => array(
-        'module' => 'devel',
-        'delta' => '0',
-        'weight' => 22,
-        'region' => 'right',
-        'status' => '0',
-        'label' => 'Switch user',
-        'type' => 'context_ui',
-      ),
-      'devel_2' => array(
-        'module' => 'devel',
-        'delta' => '2',
-        'weight' => 20,
-        'region' => 'bottom',
-        'status' => '0',
-        'label' => 'Execute PHP',
-        'type' => 'context_ui',
-      ),
-    ),
-  );
-  return $items;
+/**
+ * Helper to implementation of hook_strongarm().
+ */
+function _lbdev_strongarm() {
+  $export = array();
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'cache';
+  $strongarm->value = '0';
+
+  $export['cache'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'preprocess_css';
+  $strongarm->value = '0';
+
+  $export['preprocess_css'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'preprocess_js';
+  $strongarm->value = '0';
+
+  $export['preprocess_js'] = $strongarm;
+  return $export;
 }
