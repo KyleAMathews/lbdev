@@ -3,6 +3,15 @@
 include_once('lbdev.features.inc');
 
 /**
+ * Implementation of hook_enable().
+ */
+function lbdev_enable() {
+  // Weight needs to be high in order to strongarm variables.
+  db_query("UPDATE {system} SET weight = 100 WHERE name = 'lbdev' AND type = 'module'");
+  drupal_flush_all_caches();
+}
+
+/**
  * Implementation of hook_init().
  */
 function lbdev_init() {
@@ -11,15 +20,6 @@ function lbdev_init() {
   if ($user->uid == 1) {
     context_set('features', 'user', 'user_1');
   }
-}
-
-/**
- * Implementation of hook_enable().
- */
-function lbdev_enable() {
-  // Weight needs to be higher than webgear.module for strongarming variables.
-  db_query("UPDATE {system} SET weight = 10 WHERE name = 'lbdev' AND type = 'module'");
-  drupal_flush_all_caches();
 }
 
 /**
