@@ -36,17 +36,6 @@ function lbdev_enable() {
 }
 
 /**
- * Implementation of hook_init().
- */
-function lbdev_init() {
-  global $user;
-
-  if ($user->uid == 1) {
-    context_set('features', 'user', 'user_1');
-  }
-}
-
-/**
  * Implementation of hook_disable().
  */
 function lbdev_disable() {
