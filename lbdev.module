@@ -13,7 +13,6 @@ function lbdev_enable() {
   // enabled to a variable so we can disable them when this feature is disabled.
   if (function_exists('features_get_features') && ($feature = features_get_features('lbdev')) && !empty($feature->info['recommends'])) {
     $all_modules = array_keys(module_rebuild_cache());
-    dsm($all_modules);
     // Filter out any non-existent modules.
     $modules = array_intersect($feature->info['recommends'], $all_modules);
     // Find out if any modules are already enabled.
