@@ -61,7 +61,8 @@ function lbdev_menu() {
   $items['typography'] = array(
     'title' => 'Typography Test Page',
     'description' => 'Configure settings',
-    'page callback' => 'lbdev_typography_test_page',
+    'page callback' => 'theme',
+    'page arguments' => array('typography_test_page'),
     'access callback' => TRUE,
   );
 
@@ -79,11 +80,4 @@ function lbdev_theme() {
   );
 
   return $items;
-}
-
-/**
- * Page callback for typography-test-page.
- */
-function lbdev_typography_test_page() {
-  return theme('typography_test_page');
 }
