@@ -11,7 +11,7 @@ function lbdev_enable() {
 
   // Enable recommended modules if they are available. We save the modules we
   // enabled to a variable so we can disable them when this feature is disabled.
-  if (function_exists('features_get_features') && ($feature = features_get_features('lbdev')) && !empty($feature->info['recommends'])) {
+  if (function_exists('features_get_features') && ($feature = features_get_features('lbdev', TRUE)) && !empty($feature->info['recommends'])) {
     $all_modules = array_keys(module_rebuild_cache());
     // Filter out any non-existent modules.
     $modules = array_intersect($feature->info['recommends'], $all_modules);
